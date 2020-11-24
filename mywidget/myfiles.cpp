@@ -445,7 +445,7 @@ void MyFiles::clear_file_list()
 
 
 /**
-* @brief  清空文件条目
+* @brief  清空所有文件条目
 *
 * @param
 *
@@ -488,6 +488,33 @@ void MyFiles::add_upload_items(QString icon_path, QString name)
 
 
 
+/**
+* @brief  刷新文件条目展示
+*
+* @param
+*
+*
+*
+* @returns
+*
+*
+*/
+void MyFiles::refresh_file_items()
+{
+    clear_items();
+
+    //如果文件列表不为空，显示文件列表
+    if(m_file_list.isEmpty() == false){
+        int count = m_file_list.size();
+        for(int i = 0; i < count; ++i){
+            FileInfo* info = m_file_list.at(i);
+            QListWidgetItem* item = info->item;
+            ui->listWidget->addItem(item);
+        }
+    }
+    //添加上传文件item
+    this->add_upload_items();
+}
 
 
 
