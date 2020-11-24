@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>881</width>
+    <height>603</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <widget class="ButtonGroup" name="btn_group" native="true">
+    <property name="geometry">
+     <rect>
+      <x>9</x>
+      <y>9</y>
+      <width>857</width>
+      <height>111</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QStackedWidget" name="stackedWidget">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>130</y>
+      <width>881</width>
+      <height>471</height>
+     </rect>
+    </property>
+    <widget class="MyFiles" name="page_file"/>
+    <widget class="ShareList" name="page_share"/>
+    <widget class="RankList" name="page_rank"/>
+    <widget class="Trans" name="page_trans"/>
+   </widget>
+  </widget>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>MyFiles</class>
+   <extends>QWidget</extends>
+   <header location="global">mywidget/myfiles.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ShareList</class>
+   <extends>QWidget</extends>
+   <header location="global">mywidget/sharelist.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>RankList</class>
+   <extends>QWidget</extends>
+   <header location="global">mywidget/ranklist.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>Trans</class>
+   <extends>QWidget</extends>
+   <header location="global">mywidget/trans.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ButtonGroup</class>
+   <extends>QWidget</extends>
+   <header location="global">mywidget/buttongroup.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

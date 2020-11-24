@@ -1,0 +1,37 @@
+<RCC>
+    <qresource prefix="/">
+        <file>image2/balckButton.png</file>
+        <file>image2/display_bk.bmp</file>
+        <file>image2/login_bk.jpg</file>
+        <file>image2/login_close.png</file>
+        <file>image2/login_min.png</file>
+        <file>image2/login_setting.png</file>
+        <file>image2/login2.jpg</file>
+        <file>image2/tile_close.png</file>
+        <file>image2/tile_file.png</file>
+        <file>image2/tile_hot.png</file>
+        <file>image2/tile_min.png</file>
+        <file>image2/title_bk.jpg</file>
+        <file>image2/title_bk2.jpg</file>
+        <file>image2/title_bk3.jpg</file>
+        <file>image2/title_change.png</file>
+        <file>image2/title_close.png</file>
+        <file>image2/title_data.png</file>
+        <file>image2/title_max.png</file>
+        <file>image2/title_min.png</file>
+        <file>image2/title_normal.png</file>
+        <file>image2/title_share.png</file>
+        <file>image2/title_user.png</file>
+        <file>image2/top1.png</file>
+        <file>image2/top2.png</file>
+        <file>image2/top3.png</file>
+        <file>image2/upload.png</file>
+        <file>image2/main_logo.png</file>
+        <file>image2/account_abnormal_bg.png</file>
+        <file>image2/btn_sys_close.png</file>
+        <file>image2/btn_sys_maximize.png</file>
+        <file>image2/btn_sys_minimize.png</file>
+        <file>image2/btn_sys_restore.png</file>
+        <file>image2/btn_sys_setting.png</file>
+    </qresource>
+</RCC>
