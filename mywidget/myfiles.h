@@ -39,7 +39,7 @@ public:
     //清空所有item
     void clear_items();
     //添加上传文件的item
-    void add_upload_items(QString icon_path, QString name);
+    void add_upload_items(QString icon_path = ":/images2/upload.png", QString name = "upload files");
     //文件的item展示
     void refresh_file_items();
 
@@ -113,7 +113,7 @@ private:
     QAction* m_refresh_action;//刷新
     QAction* m_upload_action;//上传
 
-    long m_user_file_count;//用户文件数目
+    int m_user_file_count;//用户文件数目
     int m_start;//文件位置起点
     int m_count;//每次请求文件的个数
 

@@ -503,7 +503,7 @@ void MyFiles::refresh_file_items()
 {
     clear_items();
 
-    //如果文件列表不为空，显示文件列表
+    //如果文件列表不为空，显示文件item
     if(m_file_list.isEmpty() == false){
         int count = m_file_list.size();
         for(int i = 0; i < count; ++i){
@@ -515,6 +515,351 @@ void MyFiles::refresh_file_items()
     //添加上传文件item
     this->add_upload_items();
 }
+
+/**
+* @brief  获取服务器json文件
+*
+* @param json文件
+*
+*
+*
+* @returns
+*      成功：返回token和文件个数
+*      失败： 返回空list
+*/
+QStringList MyFiles::get_count_status(QByteArray json)
+{
+    QJsonParseError err;
+    QStringList list;
+
+    QJsonDocument json_doc = QJsonDocument::fromJson(json,&err);
+
+    if(err.error == QJsonParseError::NoError){
+
+        if(json_doc.isNull() || json.isEmpty()){
+            cout<<"json_doc.isNull() || json.isEmpty()!";
+            return list;
+        }
+
+        if(json_doc.isObject()){
+            //获取外层对象
+            QJsonObject obj = json_doc.object();
+            cout<<"服务器上返回的数据: "<< json;
+            list.append(obj.value("token").toString());//登录token
+            list.append(obj.value("num").toString());//文件个数
+
+        }
+        else{
+            cout<<"erro"<<err.errorString();
+
+        }
+    }
+
+
+    return list;
+}
+
+/**
+* @brief  刷新文件列表
+*
+* @param cmd:Normal:普通用户列表
+*           PvAsc:按照下载量升序
+*           PvDesc:按照下载量降序
+*
+* @returns
+*
+*
+*/
+void MyFiles::refresh_files(MyFiles::Display cmd)
+{
+    m_user_file_count = 0;
+
+    QNetworkRequest request;
+
+    LoginInfoInstance *login = LoginInfoInstance::get_instance();
+
+    //url
+    QString url = QString("http://%1:%2/myfiles?cmd=count").arg(login->get_ip()).arg(login->get_port());
+    request.setUrl(QUrl(url));
+
+    request.setHeader(QNetworkRequest::ContentTypeHeader,"application/json");
+
+    //设置json数据包
+    QByteArray data = set_get_count_json(login->get_user(), login->get_token());
+
+    //post数据
+    QNetworkReply* reply = m_manager->post(request, data);
+    if(reply == nullptr){
+        cout<<"reply is nullptr";
+        return;
+    }
+
+    //接收完消息后进行验证
+    connect(reply, &QNetworkReply::finished,[=](){
+        //如果有错误
+        if(reply->error() != QNetworkReply::NoError){
+            cout<<reply->errorString();
+            reply->deleteLater();
+            return;
+        }
+        QByteArray array = reply->readAll();
+        //读取后释放资源
+        reply->deleteLater();
+
+        QStringList list = get_count_status(array);
+
+        //token 验证失败
+        if(list.at(0) == "111"){
+            QMessageBox::warning(this,"身份验证失败","请重新登录");
+            //发送重新登录的信号
+            emit login_again_signal();
+
+            return;
+        }
+
+        //获取个数
+        m_user_file_count = list.at(1).toInt();
+
+        clear_file_list();
+
+        //如果列表里有文件
+        if(m_user_file_count > 0){
+            //获取文件列表
+            m_start = 0;//start from 0
+            m_count = 10;//get 10 each time
+
+            //获取新的文件列表信息
+            get_user_file_list(cmd);
+        }
+        else{
+            refresh_file_items();//更新条目
+        }
+
+    });
+}
+
+
+/**
+* @brief  设置json包
+*
+* @param user 用户名
+* @param token 用户标识
+*
+*
+* @returns
+*       成功：返回json文本
+*       失败： 返回空字符串
+*
+*/
+QByteArray MyFiles::set_get_count_json(QString user, QString token)
+{
+    QMap<QString, QVariant> tmp;
+    tmp.insert("user", user);
+    tmp.insert("token", token);
+
+    QJsonDocument json_doc = QJsonDocument::fromVariant(tmp);
+
+    if(json_doc.isNull()){
+        cout<<"json_doc.isNull()";
+        return "";
+    }
+
+    return json_doc.toJson();
+
+}
+
+/**
+* @brief  设置json包
+*
+* @param user 用户名
+* @param token 用户标识
+* @param start 开始位置
+* @param count 取得个数
+*
+*
+* @returns
+*       成功：返回json文本
+*       失败： 返回空字符串
+*
+*/
+QByteArray MyFiles::set_file_list_json(QString user, QString token, int start, int count)
+{
+    QMap<QString, QVariant> tmp;
+    tmp.insert("user", user);
+    tmp.insert("token", token);
+    tmp.insert("start", start);
+    tmp.insert("count", count);
+
+    QJsonDocument json_doc = QJsonDocument::fromVariant(tmp);
+
+    if(json_doc.isNull()){
+        cout<<"json_doc.isNull()";
+        return "";
+    }
+
+    return json_doc.toJson();
+}
+
+/**
+* @brief  获取用户文件列表（递归函数）
+*
+* @param cmd:Normal:普通用户列表
+*           PvAsc:按照下载量升序
+*           PvDesc:按照下载量降序
+*
+* @returns
+*
+*
+*/
+void MyFiles::get_user_file_list(MyFiles::Display cmd)
+{
+    //退出条件
+    if(m_user_file_count <= 0){
+        cout<<"文件列表获取结束！";
+        refresh_file_items();
+        return;
+    }
+    //如果用户请求的文件个数大于文件总数量
+    else if(m_count > m_user_file_count){
+        m_count = m_user_file_count;
+    }
+
+    //获取登录信息实例
+    LoginInfoInstance* login = LoginInfoInstance::get_instance();
+    QNetworkRequest req;
+
+    QString tmp;
+    if(cmd == Normal){
+        tmp = "normal";
+    }else if(cmd == PvAsc){
+        tmp = "pvasc";
+    }else if(PvDesc){
+        tmp = "pvdesc";
+    }
+
+    QString url = QString("http://%1:%2/myfiles?/cmd=%3").arg(login->get_ip()).arg(login->get_port().arg(tmp));
+
+    req.setUrl(QUrl(url));
+    req.setHeader(QNetworkRequest::ContentTypeHeader,"application/json");
+
+    QByteArray data = set_file_list_json(login->get_user(), login->get_token(), m_start, m_count);
+
+
+    //发送post请求
+    QNetworkReply* rep = m_manager->post(req, data);
+    if(rep == nullptr){
+        cout<<"rep is nullptr";
+        return;
+    }
+
+    //改变文件列表起点位置
+    m_start += m_count;
+    m_user_file_count -= m_count;
+
+
+    //接收完消息后进行验证
+    connect(rep, &QNetworkReply::finished,[=](){
+        //如果有错误
+        if(rep->error() != QNetworkReply::NoError){
+            cout<<rep->errorString();
+            rep->deleteLater();//释放资源
+            return;
+        }
+
+        QByteArray array = rep->readAll();
+        //读取后释放资源
+        rep->deleteLater();
+
+        //token 验证失败
+        if(m_cn.getCode(array) == "111"){
+            QMessageBox::warning(this,"身份验证失败","请重新登录");
+            //发送重新登录的信号
+            emit login_again_signal();
+
+            return;
+        }
+        if(m_cn.getCode(array) != "015"){
+            //解析文件列表json信息，存放在文件列表中
+            get_file_json_info(array);
+            //递归
+            get_user_file_list();
+        }
+
+    });
+
+}
+
+/**
+* @brief  解析列表文件json信息，然后存入文件列表
+*
+* @param data json文本
+*
+*
+*
+* @returns
+*
+*
+*/
+void MyFiles::get_file_json_info(QByteArray data)
+{
+    QJsonParseError err;
+
+    QJsonDocument json_doc = QJsonDocument::fromJson(data, &err);
+
+    if(err.error == QJsonParseError::NoError){
+        if(json_doc.isNull() || json_doc.isEmpty()){
+            cout<<"json_doc is NULL || json_doc is empty!";
+            return ;
+        }
+        //如果最外层是对象
+        if(json_doc.isObject()){
+            //获取最外层的对象
+            QJsonObject obj = json_doc.object();
+            //获取files对应的存对象的数组
+            QJsonArray arr_files = obj.value("files").toArray();
+
+            int size = arr_files.size();
+
+            for(int i = 0; i < size; ++i){
+                QJsonObject tmp = arr_files[i].toObject();
+
+//                struct FileInfo
+//                {
+//                    QString md5;            // 文件md5码
+//                    QString filename;       // 文件名字
+//                    QString user;           // 用户
+//                    QString time;           // 上传时间
+//                    QString url;            // url
+//                    QString type;           // 文件类型
+//                    qint64 size;            // 文件大小
+//                    int shareStatus;        // 是否共享, 1共享， 0不共享
+//                    int pv;                 // 下载量
+//                    QListWidgetItem *item;  // list widget 的item
+//                };
+
+                FileInfo* info = new FileInfo;
+                info->user = tmp.value("user").toString();
+                info->md5 = tmp.value("md5").toString();
+                info->time = tmp.value("time").toString();
+                info->filename = tmp.value("filename").toString();
+                info->shareStatus = tmp.value("share_status").toInt();
+                info->pv = tmp.value("pv").toInt();
+                info->url = tmp.value("url").toString();
+                info->size = tmp.value("size").toInt();
+                info->type = tmp.value("type").toString();
+                QString type = info->type + ".png";
+                info->item = new QListWidgetItem(QIcon(m_cn.getFileType(type)), info->filename);
+                //添加到文件列表
+                m_file_list.append(info);
+            }
+        }
+    }
+    else{
+        cout<< "err = "<<err.errorString();
+    }
+
+}
+
 
 
 

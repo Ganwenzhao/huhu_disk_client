@@ -408,7 +408,7 @@ QString Common::getBoundary()
  * @brief  获得服务器回复的状态码
  *
  *
- * @param json json字符串
+ * @param json 服务器返回的json字符串
  *
  *
  * @returns
