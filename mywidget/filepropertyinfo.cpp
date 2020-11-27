@@ -2,7 +2,7 @@
 #include "ui_filepropertyinfo.h"
 
 FilePropertyInfo::FilePropertyInfo(QWidget *parent) :
-    QWidget(parent),
+    QDialog(parent),
     ui(new Ui::FilePropertyInfo)
 {
     ui->setupUi(this);

@@ -1,79 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>FilePropertyInfo</class>
- <widget class="QWidget" name="FilePropertyInfo">
+ <widget class="QDialog" name="FilePropertyInfo">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>371</width>
-    <height>380</height>
+    <width>280</width>
+    <height>370</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Dialog</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="1">
-    <widget class="QLabel" name="label_name">
-     <property name="styleSheet">
-      <string notr="true">color: rgb(0, 170, 255);
-font: 18pt &quot;微软雅黑&quot;;</string>
-     </property>
-     <property name="text">
-      <string>文件1</string>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="0">
-    <widget class="QLabel" name="label_3">
-     <property name="styleSheet">
-      <string notr="true">color: rgb(0, 170, 255);
-font: 18pt &quot;微软雅黑&quot;;</string>
-     </property>
-     <property name="text">
-      <string>上传时间：</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="1">
-    <widget class="QLabel" name="label_size">
-     <property name="styleSheet">
-      <string notr="true">color: rgb(0, 170, 255);
-font: 18pt &quot;微软雅黑&quot;;</string>
-     </property>
-     <property name="text">
-      <string>100MB</string>
-     </property>
-    </widget>
-   </item>
-   <item row="3" column="0">
-    <widget class="QLabel" name="label_4">
-     <property name="styleSheet">
-      <string notr="true">color: rgb(0, 170, 255);
-font: 18pt &quot;微软雅黑&quot;;</string>
-     </property>
-     <property name="text">
-      <string>文件大小：</string>
-     </property>
-    </widget>
-   </item>
    <item row="0" column="0">
     <widget class="QLabel" name="label">
      <property name="styleSheet">
-      <string notr="true">color: rgb(0, 170, 255);
-font: 18pt &quot;微软雅黑&quot;;</string>
+      <string notr="true">color: rgb(85, 170, 255);
+font: 16pt &quot;微软雅黑&quot;;</string>
      </property>
      <property name="text">
-      <string>文件名：</string>
+      <string>文件名字：</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLabel" name="label_name">
+     <property name="styleSheet">
+      <string notr="true">color: rgb(85, 170, 255);
+font: 16pt &quot;微软雅黑&quot;;</string>
+     </property>
+     <property name="text">
+      <string>filename</string>
      </property>
     </widget>
    </item>
    <item row="1" column="0">
     <widget class="QLabel" name="label_2">
      <property name="styleSheet">
-      <string notr="true">color: rgb(0, 170, 255);
-font: 18pt &quot;微软雅黑&quot;;</string>
+      <string notr="true">color: rgb(85, 170, 255);
+font: 16pt &quot;微软雅黑&quot;;</string>
      </property>
      <property name="text">
       <string>上传用户：</string>
@@ -83,88 +50,121 @@ font: 18pt &quot;微软雅黑&quot;;</string>
    <item row="1" column="1">
     <widget class="QLabel" name="label_user">
      <property name="styleSheet">
-      <string notr="true">color: rgb(0, 170, 255);
-font: 18pt &quot;微软雅黑&quot;;</string>
+      <string notr="true">color: rgb(85, 170, 255);
+font: 16pt &quot;微软雅黑&quot;;</string>
      </property>
      <property name="text">
-      <string>AlexanderGan</string>
+      <string>Alex</string>
      </property>
     </widget>
    </item>
-   <item row="5" column="0">
-    <widget class="QLabel" name="label_6">
+   <item row="2" column="0">
+    <widget class="QLabel" name="label_3">
      <property name="styleSheet">
-      <string notr="true">color: rgb(0, 170, 255);
-font: 18pt &quot;微软雅黑&quot;;</string>
+      <string notr="true">color: rgb(85, 170, 255);
+font: 16pt &quot;微软雅黑&quot;;</string>
      </property>
      <property name="text">
-      <string>下载地址：</string>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="1">
-    <widget class="QLabel" name="label_share">
-     <property name="styleSheet">
-      <string notr="true">color: rgb(0, 170, 255);
-font: 18pt &quot;微软雅黑&quot;;</string>
-     </property>
-     <property name="text">
-      <string>未分享</string>
-     </property>
-    </widget>
-   </item>
-   <item row="4" column="0">
-    <widget class="QLabel" name="label_5">
-     <property name="styleSheet">
-      <string notr="true">color: rgb(0, 170, 255);
-font: 18pt &quot;微软雅黑&quot;;</string>
-     </property>
-     <property name="text">
-      <string>分享状态：</string>
-     </property>
-    </widget>
-   </item>
-   <item row="6" column="0">
-    <widget class="QLabel" name="label_7">
-     <property name="styleSheet">
-      <string notr="true">color: rgb(0, 170, 255);
-font: 18pt &quot;微软雅黑&quot;;</string>
-     </property>
-     <property name="text">
-      <string>下载量：</string>
-     </property>
-    </widget>
-   </item>
-   <item row="6" column="1">
-    <widget class="QLabel" name="label_pv">
-     <property name="styleSheet">
-      <string notr="true">color: rgb(0, 170, 255);
-font: 18pt &quot;微软雅黑&quot;;</string>
-     </property>
-     <property name="text">
-      <string>12</string>
-     </property>
-    </widget>
-   </item>
-   <item row="5" column="1">
-    <widget class="QLabel" name="label_url">
-     <property name="styleSheet">
-      <string notr="true">color: rgb(0, 170, 255);
-font: 18pt &quot;微软雅黑&quot;;</string>
-     </property>
-     <property name="text">
-      <string>xxx</string>
+      <string>上传时间：</string>
      </property>
     </widget>
    </item>
    <item row="2" column="1">
     <widget class="QLabel" name="label_time">
      <property name="styleSheet">
-      <string notr="true">color: rgb(0, 170, 255);
-font: 18pt &quot;微软雅黑&quot;;</string>
+      <string notr="true">color: rgb(85, 170, 255);
+font: 16pt &quot;微软雅黑&quot;;</string>
      </property>
      <property name="text">
-      <string>Time</string>
+      <string>time</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="label_4">
+     <property name="styleSheet">
+      <string notr="true">color: rgb(85, 170, 255);
+font: 16pt &quot;微软雅黑&quot;;</string>
+     </property>
+     <property name="text">
+      <string>文件大小：</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QLabel" name="label_size">
+     <property name="styleSheet">
+      <string notr="true">color: rgb(85, 170, 255);
+font: 16pt &quot;微软雅黑&quot;;</string>
+     </property>
+     <property name="text">
+      <string>xxMB</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="label_5">
+     <property name="styleSheet">
+      <string notr="true">color: rgb(85, 170, 255);
+font: 16pt &quot;微软雅黑&quot;;</string>
+     </property>
+     <property name="text">
+      <string>分享状态：</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="QLabel" name="label_share">
+     <property name="styleSheet">
+      <string notr="true">color: rgb(85, 170, 255);
+font: 16pt &quot;微软雅黑&quot;;</string>
+     </property>
+     <property name="text">
+      <string>share_status</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QLabel" name="label_6">
+     <property name="styleSheet">
+      <string notr="true">color: rgb(85, 170, 255);
+font: 16pt &quot;微软雅黑&quot;;</string>
+     </property>
+     <property name="text">
+      <string>下载地址：</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1">
+    <widget class="QLabel" name="label_url">
+     <property name="styleSheet">
+      <string notr="true">color: rgb(85, 170, 255);
+font: 16pt &quot;微软雅黑&quot;;</string>
+     </property>
+     <property name="text">
+      <string>url</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="0">
+    <widget class="QLabel" name="label_7">
+     <property name="styleSheet">
+      <string notr="true">color: rgb(85, 170, 255);
+font: 16pt &quot;微软雅黑&quot;;</string>
+     </property>
+     <property name="text">
+      <string>总下载量：</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="1">
+    <widget class="QLabel" name="label_pv">
+     <property name="styleSheet">
+      <string notr="true">color: rgb(85, 170, 255);
+font: 16pt &quot;微软雅黑&quot;;</string>
+     </property>
+     <property name="text">
+      <string>2</string>
      </property>
     </widget>
    </item>

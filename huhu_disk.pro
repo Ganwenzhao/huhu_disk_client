@@ -25,12 +25,12 @@ SOURCES += main.cpp \
     mywidget/sharelist.cpp \
     mywidget/trans.cpp \
     common/uploadtask.cpp \
-    mywidget/filepropertyinfo.cpp \
     mywidget/dataprogress.cpp \
     common/uploadlayout.cpp \
     common/downloadlayout.cpp \
     common/downloadtask.cpp \
-    mywidget/menu.cpp
+    mywidget/menu.cpp \
+    mywidget/filepropertyinfo.cpp
 
 
 HEADERS  += mywidget/mainwindow.h \
@@ -45,12 +45,12 @@ HEADERS  += mywidget/mainwindow.h \
     mywidget/sharelist.h \
     mywidget/trans.h \
     common/uploadtask.h \
-    mywidget/filepropertyinfo.h \
     mywidget/dataprogress.h \
     common/uploadlayout.h \
     common/downloadlayout.h \
     common/downloadtask.h \
-    mywidget/menu.h
+    mywidget/menu.h \
+    mywidget/filepropertyinfo.h
 
 FORMS    += ui/mainwindow.ui \
     ui/login.ui \
@@ -60,8 +60,8 @@ FORMS    += ui/mainwindow.ui \
     ui/ranklist.ui \
     ui/sharelist.ui \
     ui/trans.ui \
-    mywidget/filepropertyinfo.ui \
-    mywidget/dataprogress.ui
+    mywidget/dataprogress.ui \
+    mywidget/filepropertyinfo.ui
 
 RESOURCES += \
     qsrc.qrc

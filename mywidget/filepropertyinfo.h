@@ -1,14 +1,14 @@
 #ifndef FILEPROPERTYINFO_H
 #define FILEPROPERTYINFO_H
 
-#include <QWidget>
+#include <QDialog>
 #include "common/common.h"
 
 namespace Ui {
 class FilePropertyInfo;
 }
 
-class FilePropertyInfo : public QWidget
+class FilePropertyInfo : public QDialog
 {
     Q_OBJECT
 

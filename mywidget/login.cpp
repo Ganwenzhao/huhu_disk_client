@@ -151,7 +151,11 @@ QByteArray Login::setLoginJson(QString user, QString pwd)
  *      成功: 返回注册信息的json字符串
  *      失败：空字符串
  */
-QByteArray Login::setRegisterJson(QString user_name, QString nick_name, QString first_pwd, QString phone, QString email)
+QByteArray Login::setRegisterJson(QString user_name,
+                                  QString nick_name,
+                                  QString first_pwd,
+                                  QString phone,
+                                  QString email)
 {
     QMap<QString,QVariant> json_reg;
     json_reg.insert("user_name",user_name);
@@ -295,11 +299,14 @@ void Login::on_toolButton_login_clicked()
         //失败返回{"code",001}
         cout<<"server return value:"<<json;
         QStringList tmp_list = getLoginStatus(json);
+
         if(tmp_list.at(0) == "000"){
             cout<<"登录成功";
+
             //设置登录信息，文件列表需要用实例
             LoginInfoInstance* p_instance = LoginInfoInstance::get_instance();
             p_instance->setLoginInfo(user,addr,port,tmp_list.at(1));
+
             cout<<p_instance->get_user().toUtf8().data()<<","<<p_instance->get_ip()
                   <<","<<p_instance->get_port()<<","<<p_instance->get_token();
             //隐藏此界面
