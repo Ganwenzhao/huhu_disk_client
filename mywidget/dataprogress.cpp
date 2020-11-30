@@ -40,7 +40,7 @@ void DataProgress::set_filename(QString name)
  * @returns
  *
  */
-void DataProgress::set_progress(uint val, uint end)
+void DataProgress::set_progress(qint64 val, qint64 end)
 {
     ui->progressBar->setValue(val);
     ui->progressBar->setMaximum(end);

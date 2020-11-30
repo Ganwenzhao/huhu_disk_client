@@ -18,8 +18,8 @@ class MyFiles : public QWidget
 public:
     explicit MyFiles(QWidget *parent = 0);
     ~MyFiles();
-    //初始化文件列表
-    void init_file_list();
+    //初始化文件显示列表
+    void init_file_listwidget();
     //添加右键菜单
     void add_action_menu();
 
@@ -37,7 +37,7 @@ public:
     //清空文件列表
     void clear_file_list();
     //清空所有item
-    void clear_items();
+    void clear_all_items();
     //添加上传文件的item
     void add_upload_items(QString icon_path = ":/images2/upload.png", QString name = "upload files");
     //文件的item展示

@@ -7,7 +7,7 @@
 #include <Qurl>
 #include "mywidget/dataprogress.h"
 
-//上传文件信息
+//下载文件信息
 struct DownloadFileInfo{
 
     QString md5;//文件md5码
@@ -30,10 +30,11 @@ public:
     static void destory();
 
     //追加下载文件到下载文件列表
-    int append_download_list(FileInfo* info,QString path, bool is_shared);
+    int append_download_list(FileInfo* info,QString path, bool is_shared = false);
 
     bool is_empty();//判断下载队列是否为空
     bool is_download();//是否有文件正在下载
+    bool is_share_task();//是否为共享文件的任务
 
     //取出最前的下载任务，如果任务队列没有任务正在下载，设置第0个任务下载
     DownloadFileInfo* take_task();

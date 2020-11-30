@@ -49,7 +49,7 @@ void DownloadTask::destory()
  *
  *
  */
-int DownloadTask::append_download_list(FileInfo* info,QString path, bool is_shared)
+int DownloadTask::append_download_list(FileInfo* info, QString path, bool is_shared)
 {
     //检查文件是否已经在下载队列中
     for(int i = 0; i < list.size(); i++ ){
@@ -136,6 +136,24 @@ bool DownloadTask::is_download()
 
     return false;
 }
+/**
+ * @brief  第一个任务是不是共享文件的任务
+ *
+ * @param
+ *
+ *
+ *
+ * @returns
+ *
+ *
+ */
+bool DownloadTask::is_share_task()
+{
+    if(this->is_empty()){
+        return nullptr;
+    }
+    return list.at(0)->isShared;
+}
 
 /**
  * @brief  取出最前的下载任务，如果任务队列没有任务正在下载，设置第0个任务下载
@@ -156,6 +174,7 @@ DownloadFileInfo *DownloadTask::take_task()
     //取出队首任务
     DownloadFileInfo* first = list.at(0);
     list.at(0)->isDownload = true;
+
     return first;
 
 }

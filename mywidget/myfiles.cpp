@@ -18,7 +18,7 @@ MyFiles::MyFiles(QWidget *parent) :
 {
     ui->setupUi(this);
     //初始化文件列表
-    init_file_list();
+    init_file_listwidget();
     //添加右键菜单
     add_action_menu();
     //创建http管理对象
@@ -43,7 +43,7 @@ MyFiles::~MyFiles()
  *
  *
  */
-void MyFiles::init_file_list()
+void MyFiles::init_file_listwidget()
 {
     //设置显示模式
     ui->listWidget->setViewMode(QListView::IconMode);
@@ -457,7 +457,6 @@ void MyFiles::clear_file_list()
 }
 
 
-
 /**
 * @brief  清空所有文件条目
 *
@@ -469,7 +468,7 @@ void MyFiles::clear_file_list()
 *
 *
 */
-void MyFiles::clear_items()
+void MyFiles::clear_all_items()
 {   //统计条目个数
     int item_count = ui->listWidget->count();
     /*
@@ -515,7 +514,7 @@ void MyFiles::add_upload_items(QString icon_path, QString name)
 */
 void MyFiles::refresh_file_items()
 {
-    clear_items();
+    clear_all_items();
 
     //如果文件列表不为空，显示文件item
     if(m_file_list.isEmpty() == false){
@@ -1063,7 +1062,7 @@ void MyFiles::dele_file(FileInfo *info)
     LoginInfoInstance* login = LoginInfoInstance::get_instance();
     QNetworkRequest req;
 
-    QString url = QString("http://%1:%2/dealfiles?cmd=share")
+    QString url = QString("http://%1:%2/dealfile?cmd=share")
             .arg(login->get_ip())
             .arg(login->get_port()
             );
@@ -1173,7 +1172,7 @@ void MyFiles::get_file_property(FileInfo *info)
 */
 void MyFiles::add_download_file()
 {
-    emit goto_transfer();
+    emit goto_transfer(TransferStatus::Download);
     //获取当前选中的item
     QListWidgetItem *item = ui->listWidget->currentItem();
     if(item == nullptr){
@@ -1201,7 +1200,7 @@ void MyFiles::add_download_file()
 
             int res = down_instance->append_download_list(m_file_list.at(i), file_pathname);
             if(res == -1){
-                QMessageBox::warning(this, "任务已经存在"， "任务已经在下载队列中");
+                QMessageBox::warning(this, "任务已经存在", "任务已经在下载队列中");
 
             }else if(res == -2){
                 //记录文件下载失败
@@ -1278,9 +1277,182 @@ void MyFiles::download_file_action()
     });
 
     connect(reply, &QNetworkReply::downloadProgress,[=](qint64 bytes_writen, qint64 bytes_total){
+        //进度条函数有默认初始值
         dp->set_progress(bytes_writen, bytes_total);
     });
 
+
+}
+
+/**
+* @brief  下载文件标志处理
+*
+* @param md5, file_name
+*
+*
+*
+* @returns
+*
+*
+*/
+void MyFiles::deal_file_pv(QString md5, QString file_name)
+{
+    //获取登录信息实例
+    LoginInfoInstance* login = LoginInfoInstance::get_instance();
+    QNetworkRequest req;
+
+    QString url = QString("http://%1:%2/dealfile?cmd=pv")
+            .arg(login->get_ip())
+            .arg(login->get_port()
+            );
+
+    req.setUrl(QUrl(url));
+    req.setHeader(QNetworkRequest::ContentTypeHeader,"application/json");
+
+    QByteArray data = set_deal_file_json(login->get_user()
+                                         , login->get_token()
+                                         , md5
+                                         , file_name);
+
+    //发送post请求
+    QNetworkReply* rep = m_manager->post(req, data);
+
+    if(rep == nullptr){
+        cout<<"rep is nullptr";
+        return;
+    }
+    //接收完消息后进行验证
+    connect(rep, &QNetworkReply::finished,[=](){
+        //如果有错误
+        if(rep->error() != QNetworkReply::NoError){
+            cout<<rep->errorString();
+            rep->deleteLater();//释放资源
+            return;
+        }
+
+        QByteArray array = rep->readAll();
+        //读取后释放资源
+        rep->deleteLater();
+
+        /*
+            成功: code:016
+            失败：code:017
+        */
+        if(m_cn.getCode(array) == "016"){
+            //查找文件列表匹配的元素
+            for(int i = 0; i < m_file_list.size(); ++i){
+
+                FileInfo* info = m_file_list.at(i);
+
+                //如果找到
+                if(info->md5 == md5 && info->filename == file_name){
+
+                    int pv = info->pv;
+                    info->pv = pv + 1;
+
+                    //处理完退出循环
+                    break;
+                }
+            }
+
+
+        }
+        else{
+            cout<<"文件pv信息读取失败！"<<endl;
+        }
+
+    });
+}
+
+/**
+* @brief  清除上传和下载列表
+*
+* @param
+*
+*
+*
+* @returns
+*
+*
+*/
+void MyFiles::clear_all_tasks()
+{
+    //获取上传列表实例
+    UploadTask* upload_list = UploadTask::get_instance();
+    if(upload_list == nullptr){
+        cout<<"upload_list == nullptr";
+        return;
+    }
+
+    upload_list->clear_list();
+
+    //获取下载列表实例
+    DownloadTask* down_instance = DownloadTask::get_instance();
+    if(down_instance == nullptr){
+        return;
+    }
+
+    down_instance->clear_list();
+}
+
+/**
+* @brief  定时检查上传和下载列表
+*
+* @param
+*
+*
+*
+* @returns
+*
+*
+*/
+void MyFiles::check_task_list()
+{
+    connect(&m_upload_timer, &QTimer::timeout,[=]{
+        //上传文件处理
+        upload_file_action();
+    });
+
+    //启动定时器，500ms检测一次
+    m_upload_timer.start(500);
+
+    connect(&m_download_timer, &QTimer::timeout,[=]{
+        //上传文件处理
+        download_file_action();
+    });
+
+    //启动定时器，500ms检测一次
+    m_download_timer.start(500);
+}
+
+/**
+* @brief  显示右键菜单
+*
+* @param pos 位置
+*
+*
+*
+* @returns
+*
+*
+*/
+void MyFiles::right_menu(const QPoint &pos)
+{
+    QListWidgetItem* item = ui->listWidget->itemAt(pos);
+    //没有点图标
+    if(item == nullptr){
+        //在点击的全局坐标显示菜单
+        m_menu_empty->exec(QCursor::pos());
+    }
+    //选中了item
+    else{
+        ui->listWidget->setCurrentItem(item);
+        //上传文件item没有右键菜单
+        if(item->text() == "上传文件"){
+            return;
+        }
+        m_menu->exec(QCursor::pos());
+    }
 
 }
 

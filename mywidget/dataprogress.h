@@ -17,7 +17,7 @@ public:
     //设置文件名
     void set_filename(QString name = "test");
     //设置进度条的当前值
-    void set_progress(uint val = 0, uint end = 100);
+    void set_progress(qint64 val = 0, qint64 end = 100);
 
 private:
     Ui::DataProgress *ui;
