@@ -33,18 +33,18 @@ public:
     //显示共享文件列表
     void refresh_files();
     //设置共享文件列表json
-    QByteArray set_filelist_json(int start, int count);
+    QByteArray set_sharefile_list_json(int start, int count);
     //获取共享文件列表
-    void get_user_filelist();
+    void get_user_sharefile_list();
     //解析文件列表json信息，存放在文件列表之中
-    void get_file_json_info(QByteArray data);
+    void get_sharefile_json_info(QByteArray data);
 
     //添加需要下载的文件到下载任务列表
     void add_download_file();
     //下载文件处理
     void download_files_action();
     //设置共享文件json包
-    QByteArray set_share_file_json(QString user, QString md5, QString filename);
+    QByteArray set_sharefile_json(QString user, QString md5, QString filename);
 
     //下载文件pv字段处理
     void deal_file_pv(QString md5, QString filename);
