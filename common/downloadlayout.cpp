@@ -1,8 +1,9 @@
 #include "downloadlayout.h"
 
 //初始化静态成员
-DownloadLayout::Garb DownloadLayout::tmp_garb;
 DownloadLayout* DownloadLayout::instance = new DownloadLayout;
+DownloadLayout::Garb DownloadLayout::tmp_garb;
+
 
 DownloadLayout *DownloadLayout::get_instance()
 {

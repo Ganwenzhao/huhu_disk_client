@@ -41,7 +41,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QToolButton" name="myfile">
+       <widget class="QToolButton" name="myfiles">
         <property name="text">
          <string>我的文件</string>
         </property>

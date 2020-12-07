@@ -90,7 +90,7 @@ Login::Login(QWidget *parent) :
     });
 
     //切换用户的信号处理
-    connect(m_mainwind,&MainWindow::change_user,this,[=]{
+    connect(m_mainwind,&MainWindow::switch_user,this,[=]{
         m_mainwind->hide();
         this->show();
     });
@@ -225,7 +225,8 @@ QStringList Login::getLoginStatus(QByteArray json)
 void Login::paintEvent(QPaintEvent* ev)
 {
 
-    //给窗口添加背景图  
+    //给窗口添加背景图
+    Q_UNUSED(ev);
     QPainter p(this);
     QPixmap bg(":/image2/title_bk.jpg");
 

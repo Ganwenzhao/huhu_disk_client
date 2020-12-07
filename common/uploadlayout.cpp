@@ -1,8 +1,10 @@
 #include "uploadlayout.h"
+#include <QLayout>
 
 //初始化静态成员
-UploadLayout::Garb UploadLayout::tmp_garb;
 UploadLayout* UploadLayout::instance = new UploadLayout;
+UploadLayout::Garb UploadLayout::tmp_garb;
+
 
 UploadLayout *UploadLayout::get_instance()
 {

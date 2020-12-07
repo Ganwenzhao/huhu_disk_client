@@ -21,11 +21,11 @@ public:
     //处理信号
     void manager_signals();
     //重新登录
-    void relogin();
+    void login_again();
 
 signals:
     //切换用户信号
-    void change_user();
+    void switch_user();
 protected:
     //添加背景图,绘图事件函数
     void paintEvent(QPaintEvent* ev);
@@ -36,7 +36,7 @@ protected:
 private:
     Ui::MainWindow *ui;
     Common m_main_cm;
-    QPoint locate_diff2;//鼠标当前位置-窗口左上角位置
+    QPoint locate_differ;//鼠标当前位置-窗口左上角位置
 };
 
 #endif // MAINWINDOW_H
