@@ -33,7 +33,7 @@ MainWindow::~MainWindow()
 
     delete ui;
 }
-void MainWindow::show_mainwidow(){
+void MainWindow::show_mainwindow(){
     //移动到中心
     m_main_cm.moveToCenter(this);
     //显示文件页面

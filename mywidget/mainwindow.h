@@ -17,7 +17,7 @@ public:
     ~MainWindow();
 
     //显示主窗口
-    void show_mainwidow();
+    void show_mainwindow();
     //处理信号
     void manager_signals();
     //重新登录

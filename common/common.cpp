@@ -241,7 +241,7 @@ void Common::writeLoginInfo(QString user, QString pwd, bool isRemember, QString 
 
     QFile file(path);
     if(false == file.open(QIODevice::WriteOnly)){
-        cout<<"file open err";
+        cout<<"write login info file open err";
         return;
     }
 
