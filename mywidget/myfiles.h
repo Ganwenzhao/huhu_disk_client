@@ -39,7 +39,7 @@ public:
     //清空所有item
     void clear_all_items();
     //添加上传文件的item
-    void add_upload_items(QString icon_path = ":/images2/upload.png", QString name = "upload files");
+    void add_upload_items(QString icon_path = ":/image2/upload.png", QString name = "上传文件");
     //文件的item展示
     void refresh_file_items();
 

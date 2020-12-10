@@ -29,9 +29,6 @@ signals:
 protected:
     //添加背景图,绘图事件函数
     void paintEvent(QPaintEvent* ev);
-    //拖动事件
-    void mouseMoveEvent(QMouseEvent *event);
-    void mousePressEvent(QMouseEvent* event);
 
 private:
     Ui::MainWindow *ui;

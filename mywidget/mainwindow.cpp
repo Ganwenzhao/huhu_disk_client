@@ -20,9 +20,9 @@ MainWindow::MainWindow(QWidget *parent) :
     //去掉边框
     this->setWindowFlags(windowFlags()|Qt::FramelessWindowHint);
     //为菜单栏设置父类
-    ui->btn_group->setParent(this);
+    ui->btn_group->set_parent(this);
     //处理所有信号
-    //manager_signals();
+    manager_signals();
     //默认显示文件窗口
     ui->stackedWidget->setCurrentIndex(0);
 
@@ -30,9 +30,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-
     delete ui;
 }
+
 void MainWindow::show_mainwindow(){
     //移动到中心
     m_main_cm.moveToCenter(this);
@@ -112,20 +112,3 @@ void MainWindow::paintEvent(QPaintEvent *ev)
     p.drawPixmap(0,0,this->width(),this->height(),bg);
 }
 
-void MainWindow::mouseMoveEvent(QMouseEvent *event)
-{
-    //只允许左键拖动,持续的移动用buttons
-    if(event->buttons() & Qt::LeftButton){
-        //窗口跟随
-        this->move(event->globalPos() - locate_differ);
-
-    }
-}
-
-void MainWindow::mousePressEvent(QMouseEvent *ev)
-{
-    //如果鼠标左键按下
-    if(ev->button() == Qt::LeftButton){
-        locate_differ = ev->globalPos() - this->geometry().topLeft();
-    }
-}

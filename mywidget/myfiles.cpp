@@ -148,6 +148,10 @@ void MyFiles::add_action_menu()
     connect(m_refresh_action,&QAction::triggered,[=](){
         refresh_files(Normal);
     });
+    //上传
+    connect(m_upload_action,&QAction::triggered,[=](){
+        add_upload_files();
+    });
 
 }
 
@@ -183,7 +187,7 @@ void MyFiles::add_upload_files()
         }else if(res == -2){
             QMessageBox::warning(this,"添加失败！","文件已在上传队列");
         }else if(res == -3){
-            QMessageBox::warning(this,"打开失败！","检查文件位置");
+            cout<<"打开文件失败";
         }else if(res == -4){
             cout<<"获取布局失败";
         }

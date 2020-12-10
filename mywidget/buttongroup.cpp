@@ -163,7 +163,8 @@ void ButtonGroup::mouseMoveEvent(QMouseEvent *event)
     //只允许左键拖动,持续的移动用buttons
     if(event->buttons() & Qt::LeftButton){
         //窗口跟随
-        this->move(event->globalPos() - m_pos);
+        QPoint pos = event->globalPos() - m_pos;
+        m_parent->move(pos);
 
     }
 }
@@ -183,7 +184,7 @@ void ButtonGroup::mousePressEvent(QMouseEvent *event)
 {
     //如果鼠标左键按下
     if(event->button() == Qt::LeftButton){
-        m_pos = event->globalPos() - this->geometry().topLeft();
+        m_pos = event->globalPos() - m_parent->geometry().topLeft();
     }
 }
 

@@ -53,8 +53,12 @@ Login::Login(QWidget *parent) :
     read_cfg();
     //加载图片信息，以备在显示文件类型的时候使用
     m_cm.getFileTypeList();
+    ui->lineEdit_serv_addr->setText("192.168.0.112");
+    ui->lineEdit_serv_port->setText("80");
 
-
+    //测试数据
+    ui->login_name->setText("jack");
+    ui->login_pwd->setText("abc123");
 
     //注册取消按钮
     connect(ui->toolButton_cancel,&QToolButton::clicked,this,[=](){
@@ -90,6 +94,7 @@ Login::Login(QWidget *parent) :
     connect(ui->title_widget,&TitleWidget::show_set_widget,[=](){
         ui->stackedWidget->setCurrentIndex(2);
 
+
     });
 
     //切换用户的信号处理
@@ -120,8 +125,8 @@ Login::~Login()
 QByteArray Login::setLoginJson(QString user, QString pwd)
 {
     QMap<QString,QVariant> json_login;
-    json_login.insert("user",user);
-    json_login.insert("pwd",pwd);
+    json_login.insert("user", user);
+    json_login.insert("pwd", pwd);
 
     //json格式
     /*
@@ -272,22 +277,31 @@ void Login::on_toolButton_login_clicked()
     //将登录信息写入cfg.json
     //登录信息加密
     m_cm.writeLoginInfo(user, pwd, ui->checkBox_isRem->isChecked());
-    QByteArray array = setLoginJson(user, m_cm.getStrMd5(pwd));
 
-    //设置登录的url
+    QByteArray data = setLoginJson(user, m_cm.getStrMd5(pwd));
+
     QNetworkRequest req;
-    QString url = QString("http://%1:%2/login").arg(addr).arg(port);
-    req.setUrl(QUrl(url));
+    QString url = QString("http://%1:%2/login")
+            .arg(addr)
+            .arg(port);
 
-    //设置请求头
-    req.setHeader(QNetworkRequest::ContentTypeHeader,QVariant("application/json"));
-    req.setHeader(QNetworkRequest::ContentLengthHeader,QVariant(array.size()));
-    //向服务器发送post请求
-    QNetworkReply* rep = m_manager->post(req,array);
-    cout<<"post url:"<< url << "post data:"<< array;
+    req.setUrl(QUrl(url));
+    req.setHeader(QNetworkRequest::ContentTypeHeader, QVariant("application/json"));
+    req.setHeader(QNetworkRequest::ContentLengthHeader, QVariant(data.size()));
+
+    //发送post请求
+    QNetworkReply* rep = m_manager->post(req, data);
+
+    if(rep == nullptr){
+        cout<<"rep is nullptr";
+        return;
+    }
+
+    cout<<"post url:"<< url << "post data:\n"<< data;
 
     //接收服务器发回的http响应
-    connect(rep,&QNetworkReply::finished,[=](){
+    connect(rep, &QNetworkReply::finished,[=](){
+        cout<<"get login response!";
         //出错
         if(rep->error() != QNetworkReply::NoError){
             cout<< rep->errorString();
@@ -324,11 +338,9 @@ void Login::on_toolButton_login_clicked()
             QMessageBox::warning(this, "登录失败", "用户名或者密码错误！");
         }
 
+        rep->deleteLater();//释放资源
+
     });
-
-
-    rep->deleteLater();//释放资源
-
 
 }
 
@@ -439,12 +451,12 @@ void Login::on_toolButton_reg_clicked()
 
     QNetworkRequest req;
 
-    QString url = QString("http://%1:%2/reg")
-            .arg(ui->label_serv_addr->text())
-            .arg(ui->label_serv_port->text());
+    QString url = QString("http://192.168.0.112:80/reg");
+            //.arg(ui->label_serv_addr->text())
+            //.arg(ui->label_serv_port->text());
 
     req.setUrl(QUrl(url));
-    req.setHeader(QNetworkRequest::ContentTypeHeader,"application/json");
+    req.setHeader(QNetworkRequest::ContentTypeHeader,QVariant("application/json"));
     req.setHeader(QNetworkRequest::ContentLengthHeader, QVariant(array.size()));
 
     //发送post请求
@@ -473,6 +485,7 @@ void Login::on_toolButton_reg_clicked()
             失败：code:004
         */
         if(m_cm.getCode(data) == "002"){
+            cout<<"reg success";
             //清空行编辑内容
             ui->reg_name->clear();
             ui->reg_nickname->clear();
@@ -490,7 +503,7 @@ void Login::on_toolButton_reg_clicked()
         }
         else if(m_cm.getCode(data) == "003"){
             QMessageBox::warning(this, "注册失败", QString("[%1]该用户已经注册过，请登录！").arg(username));
-        }else{
+        }else if(m_cm.getCode(data) == "004"){
             QMessageBox::warning(this, "注册失败", QString("注册失败 ！"));
         }
 
@@ -529,12 +542,12 @@ void Login::read_cfg()
         ret = DesDec((unsigned char*)tmp.data(), tmp.size(), enc_pwd, &enc_pwd_len);
 
         if(ret != 0){
-            cout<<"DesDec";
+            cout<<"DesDec error";
             return;
         }
 
 #ifdef _WIN32
-        ui->login_pwd->setText(QString::fromLocal8Bit((const char*) enc_pwd, enc_pwd_len));
+        ui->login_pwd->setText(QString::fromLocal8Bit((const char*)enc_pwd, enc_pwd_len));
 #else
         ui->login_pwd->setText(const char*)enc_pwd);
 #endif

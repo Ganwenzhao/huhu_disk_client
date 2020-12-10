@@ -303,6 +303,8 @@ void Common::writeWebInfo(QString ip, QString port, QString path)
     }
 
     file.write(json_doc.toJson());
+    cout<<json_doc.toJson();
+    cout<<"cfg.json has written!";
     file.close();
 
 }
