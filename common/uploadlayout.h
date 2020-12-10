@@ -25,10 +25,10 @@ private:
     class Garb{
     public:
         ~Garb(){
-            if(UploadLayout::instance != nullptr){
+            if(UploadLayout::instance != NULL){
 
                 delete UploadLayout::instance;
-                UploadLayout::instance = nullptr;
+                UploadLayout::instance = NULL;
 
                 cout<<"UploadLayout::instance is delete!";
             }

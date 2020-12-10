@@ -150,7 +150,7 @@ bool DownloadTask::is_download()
 bool DownloadTask::is_share_task()
 {
     if(this->is_empty()){
-        return nullptr;
+        return false;
     }
     return list.at(0)->isShared;
 }

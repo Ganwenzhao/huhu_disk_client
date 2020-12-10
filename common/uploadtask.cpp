@@ -90,17 +90,18 @@ int UploadTask::append_upload_list(QString path)
     DataProgress *p = new DataProgress;//创建进度条
     p->set_filename(tmp->file_name);
     tmp->dp = p;
-
     //获取布局
     UploadLayout *p_upload = UploadLayout::get_instance();
+
     if(!p_upload){
         cout<<"UploadLayout::get_instance() err!";
         return -4;
     }
-    QVBoxLayout * layout = (QVBoxLayout*)p_upload->get_upload_layout();
+    //QVBoxLayout * layout = (QVBoxLayout*)p_upload->get_upload_layout();
 
-    layout->insertWidget(layout->count()-1, p);
+    //layout->insertWidget(layout->count()-1, p);
 
+    cout<<"append func 103";
     //加入列表
     list.append(tmp);
     cout<<tmp->file_name.toUtf8().data()<<"已经加入上传列表";

@@ -14,7 +14,7 @@ Trans::Trans(QWidget *parent) :
 
     //设置上传布局实例
     UploadLayout* uploadlayout = UploadLayout::get_instance();
-    //uploadlayout->set_upload_layout(ui->upload_scroll);
+    uploadlayout->set_upload_layout(ui->upload_scroll);
     //设置下载布局实例
     DownloadLayout* downloadlayout = DownloadLayout::get_instance();
     //downloadlayout->set_download_layout(ui->download_scroll);

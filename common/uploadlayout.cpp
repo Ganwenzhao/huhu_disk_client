@@ -1,5 +1,4 @@
 #include "uploadlayout.h"
-#include <QLayout>
 
 //初始化静态成员
 UploadLayout* UploadLayout::instance = new UploadLayout;
@@ -16,9 +15,11 @@ void UploadLayout::set_upload_layout(QWidget *p)
     m_wg = new QWidget(p);
 
     QLayout* layout = p->layout();
-    layout->addWidget(m_wg);
+    cout<<"uploadlayout.cpp 18 success";
+    //layout->addWidget(m_wg);
+    cout<<"uploadlayout.cpp 20 success";
     //设置外边距
-    layout->setContentsMargins(0,0,0,0);
+    //layout->setContentsMargins(0,0,0,0);
     //创建垂直布局管理器
     QVBoxLayout* vlayout = new QVBoxLayout;
 

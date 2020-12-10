@@ -177,10 +177,11 @@ void MyFiles::add_upload_files()
     }
     //返回选中文件的路径，可以是多个
     QStringList list = QFileDialog::getOpenFileNames();
-
+    cout<<"getOpenFileNames success, list.size() = "<< list.size();
     for(int i = 0; i < list.size(); i++){
 
         int res = upload_list->append_upload_list(list.at(i));
+        cout<<"append success";
 
         if(res == -1){
             QMessageBox::warning(this,"文件过大！","文件大小不能超过100M");
@@ -301,6 +302,7 @@ void MyFiles::upload_file_action()
         */
 
         if(m_cn.getCode(array) == "006"){
+            cout<<"getCode = 006, 秒传成功";
             //秒传成功，写入本地记录
             m_cn.writeRecord(login->get_user(),info->file_name,"006");
             //删除已经完成的上传任务
